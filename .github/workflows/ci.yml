@@ -5,14 +5,48 @@ on:
   pull_request:
 
 jobs:
-  structure:
+  lint-and-build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Verify project structure
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install backend dependencies
         run: |
-          test -f backend/app/main.py
-          test -f cms/package.json
-          test -f viewer/package.json
-          test -f seed/reference.json
-          test -f seed/seed_shows.json
+          python -m pip install --upgrade pip
+          pip install -r backend/requirements.txt
+
+      - name: Run backend tests
+        run: |
+          cd backend
+          pytest -q
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Build CMS
+        run: |
+          cd cms
+          npm ci
+          npm run build
+
+      - name: Build Viewer
+        run: |
+          cd viewer
+          npm ci
+          npm run build
+
+      - name: Build backend Docker image
+        run: docker build -f backend/Dockerfile -t peblo-backend:ci .
+
+      - name: Build CMS Docker image
+        run: docker build -f cms/Dockerfile -t peblo-cms:ci ./cms
+
+      - name: Build Viewer Docker image
+        run: docker build -f viewer/Dockerfile -t peblo-viewer:ci ./viewer

@@ -7,5 +7,6 @@ pwdlib[argon2]
 psycopg[binary]
 pydantic
 pytest
+python-multipart
 sqlalchemy
 uvicorn[standard]
