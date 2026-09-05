@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 from sqlalchemy import CheckConstraint, String
 from sqlalchemy.dialects.postgresql import ARRAY
@@ -25,7 +25,7 @@ class Show(TimestampMixin, Base):
     title: Mapped[str] = mapped_column(String(255), nullable=False)
     slug: Mapped[str] = mapped_column(String(255), unique=True, index=True, nullable=False)
     synopsis: Mapped[str] = mapped_column(String, nullable=False)
-    section: Mapped[str] = mapped_column(String(20), index=True, nullable=False)
+    section: Mapped[Optional[str]] = mapped_column(String(20), index=True)
     categories: Mapped[list[str]] = mapped_column(ARRAY(String), nullable=False)
     status: Mapped[str] = mapped_column(String(20), index=True, nullable=False)
 

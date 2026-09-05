@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING, Optional
 
-from sqlalchemy import CheckConstraint, ForeignKey, Index, Integer, String, UniqueConstraint
+from sqlalchemy import CheckConstraint, ForeignKey, Index, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base, TimestampMixin
@@ -13,9 +13,6 @@ if TYPE_CHECKING:
 class Episode(TimestampMixin, Base):
     __tablename__ = "episodes"
     __table_args__ = (
-        UniqueConstraint(
-            "season_id", "episode_number", "language", name="uq_episodes_season_number_language"
-        ),
         CheckConstraint("language IN ('en', 'hi')", name="ck_episodes_language"),
         CheckConstraint("status IN ('draft', 'published')", name="ck_episodes_status"),
         Index("ix_episodes_content_group", "content_group"),
