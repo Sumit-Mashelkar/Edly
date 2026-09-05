@@ -1,0 +1,8 @@
+alembic
+fastapi
+pillow
+psycopg[binary]
+pydantic
+pytest
+sqlalchemy
+uvicorn[standard]
