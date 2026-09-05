@@ -1,6 +1,9 @@
 alembic
 fastapi
+httpx
+PyJWT
 pillow
+pwdlib[argon2]
 psycopg[binary]
 pydantic
 pytest
